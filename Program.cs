@@ -36,9 +36,15 @@ app.MapPut("/players/{id}", (int id, Player updated) =>
 
     players[players.IndexOf(existing)] = changed;
     return Results.Ok(changed);
-
 });
+app.MapPost("players", (Player newPlayer) =>
+{
+    var nextId = players.Max(p => p.Id) + 1;
+    var created = newPlayer with { Id = nextId };
+    players.Add(created);
 
+    return Results.Created($"/players/{created.Id}", created);
+});
 app.Run();
 
 record Player(int Id, string Name, string Rank);
