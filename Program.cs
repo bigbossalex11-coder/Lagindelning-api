@@ -26,6 +26,18 @@ var players = new List<Player>
 };
 app.UseCors();
 app.MapGet("/players", () => players);
+app.MapPut("/players/{id}", (int id, Player updated) =>
+{
+    var existing = players.FirstOrDefault(p => p.Id == id);
+    if (existing is null)
+        return Results.NotFound();
+
+    var changed = existing with { Rank = updated.Rank };
+
+    players[players.IndexOf(existing)] = changed;
+    return Results.Ok(changed);
+
+});
 
 app.Run();
 
