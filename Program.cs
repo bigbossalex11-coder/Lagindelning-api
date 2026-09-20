@@ -25,7 +25,9 @@ var players = new List<Player>
     new Player(3, "oskar" ,"röd")
 };
 app.UseCors();
+
 app.MapGet("/players", () => players);
+
 app.MapPut("/players/{id}", (int id, Player updated) =>
 {
     var existing = players.FirstOrDefault(p => p.Id == id);
@@ -37,6 +39,7 @@ app.MapPut("/players/{id}", (int id, Player updated) =>
     players[players.IndexOf(existing)] = changed;
     return Results.Ok(changed);
 });
+
 app.MapPost("players", (Player newPlayer) =>
 {
     var nextId = players.Max(p => p.Id) + 1;
@@ -44,8 +47,25 @@ app.MapPost("players", (Player newPlayer) =>
     players.Add(created);
 
     return Results.Created($"/players/{created.Id}", created);
+
 });
+
+app.MapPost("/players/{id}/file",(int id, IFormFile file) => {
+
+    var existing = players.FirstOrDefault(p => p.Id == id);
+    if (existing is null)
+        return Results.NotFound();
+
+    Directory.CreateDirectory("uploads");
+    var patch = Path.Combine("uploads", file.FileName);
+    using var stream = File.Create(patch);
+    file.CopyTo(stream);
+    var changed = existing with { FileName = file.FileName };
+    players[players.IndexOf(existing)] = changed;
+    return Results.Ok(changed);
+}).DisableAntiforgery(); ;
+
 app.Run();
 
-record Player(int Id, string Name, string Rank);
+record Player(int Id, string Name, string Rank, string? FileName = null);
 
