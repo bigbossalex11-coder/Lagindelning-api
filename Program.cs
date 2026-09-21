@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -24,6 +26,19 @@ var players = new List<Player>
     new Player(2, "eva" ,"gul"),
     new Player(3, "oskar" ,"röd")
 };
+
+if (File.Exists("players.json"))
+{
+    var json = File.ReadAllText("players.json");
+    players = JsonSerializer.Deserialize<List<Player>>(json) ?? players;
+}
+
+void Save()
+{
+    var json = JsonSerializer.Serialize(players);
+    File.WriteAllText("players.json", json);
+}
+
 app.UseCors();
 
 app.MapGet("/players", () => players);
@@ -37,6 +52,7 @@ app.MapPut("/players/{id}", (int id, Player updated) =>
     var changed = existing with { Rank = updated.Rank };
 
     players[players.IndexOf(existing)] = changed;
+    Save();
     return Results.Ok(changed);
 });
 
@@ -45,6 +61,7 @@ app.MapPost("players", (Player newPlayer) =>
     var nextId = players.Max(p => p.Id) + 1;
     var created = newPlayer with { Id = nextId };
     players.Add(created);
+    Save();
 
     return Results.Created($"/players/{created.Id}", created);
 
@@ -62,8 +79,9 @@ app.MapPost("/players/{id}/file",(int id, IFormFile file) => {
     file.CopyTo(stream);
     var changed = existing with { FileName = file.FileName };
     players[players.IndexOf(existing)] = changed;
+    Save();
     return Results.Ok(changed);
-}).DisableAntiforgery(); ;
+}).DisableAntiforgery();
 
 app.Run();
 
