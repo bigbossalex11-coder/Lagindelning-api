@@ -56,7 +56,7 @@ app.MapPut("/players/{id}", (int id, Player updated) =>
     return Results.Ok(changed);
 });
 
-app.MapPost("players", (Player newPlayer) =>
+app.MapPost("/players", (Player newPlayer) =>
 {
     var nextId = players.Max(p => p.Id) + 1;
     var created = newPlayer with { Id = nextId };
