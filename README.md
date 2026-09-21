@@ -1,0 +1,51 @@
+# Lagindelning - API
+
+Lagindelning-api är backend som är kopplat till lagindelning webappen.
+
+
+## Köra lokalt
+
+```
+git clone https://github.com/bigbossalex11-coder/Lagindelning-api
+cd Lagindelning-api
+dotnet run
+
+```
+
+API lyssnar på http://localhost:5293 : testa http://localhost:5293/players
+
+## Endpoints
+
+| Metod | Adress | Gör |
+|---|---|---|
+| GET | /players | ... |
+| POST | /players | ... |
+| PUT | /players/{id} | ... |
+| POST | /players/{id}/file | ... |
+
+## Webapp
+
+Frontend finns i [Lagindelning](https://github.com/bigbossalex11-coder/Lagindelning). Starta API:t först, sedan webappen.
+
+## Tekniska val
+
+Minimal API i stället för controllers** Fyra endpoints och en datatyp. 
+Controllers och service-lager hade lagt till filer utan att göra något tydligare. 
+Vid fler resurser blir uppdelningen motiverad.
+
+Records med with och Player bär bara data, ingen logik. Oföränderlig, 
+så ändringar görs med with som ger en ny kopia i stället för att skriva över.
+
+JSON-fil i stället för databas
+Listan ligger i minnet och skrivs till players.json vid varje ändring
+och läses in vid start. Persistens utan extra beroenden. 
+SQLite med EF Core är nästa steg och kräver ingen ändring i klienten.
+
+Två separata repon. Två program som startas och driftsätts var för sig. 
+Uppgiften kräver dessutom två repolänkar.
+
+Filnamn i stället för bilder Spelarna är barn, så foton vore personuppgifter.
+Appen sparar filer och visar filnamnet, men lagrar inga bilder.
+
+DisableAntiforgery CSRF-skyddet är gjort för formulär med cookies.
+API:t använder inga cookies och begränsas av CORS, så token tillför inget.
