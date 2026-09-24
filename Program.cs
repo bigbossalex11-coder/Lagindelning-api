@@ -27,6 +27,8 @@ var players = new List<Player>
     new Player(3, "oskar" ,"röd")
 };
 
+var allowedRanks = new[] { "grön", "gul", "röd" };
+
 if (File.Exists("players.json"))
 {
     var json = File.ReadAllText("players.json");
@@ -48,6 +50,8 @@ app.MapPut("/players/{id}", (int id, Player updated) =>
     var existing = players.FirstOrDefault(p => p.Id == id);
     if (existing is null)
         return Results.NotFound();
+    if (!allowedRanks.Contains(updated.Rank))
+        return Results.BadRequest("Ranken måste vara grön, gul eller röd");
 
     var changed = existing with { Rank = updated.Rank };
 
@@ -60,6 +64,8 @@ app.MapPost("/players", (Player newPlayer) =>
 {
     if (string.IsNullOrWhiteSpace(newPlayer.Name))
         return Results.BadRequest("Namn saknas");
+    if (!allowedRanks.Contains(newPlayer.Rank))
+        return Results.BadRequest("Ranken måste vara grön, gul eller röd");
 
     var nextId = players.Count == 0 ? 1 : players.Max(p => p.Id) + 1;
     var created = newPlayer with { Id = nextId };
@@ -121,4 +127,3 @@ app.MapGet("/teams", (int count, string mode) =>{
 app.Run();
 
 record Player(int Id, string Name, string Rank, string? FileName = null);
-
