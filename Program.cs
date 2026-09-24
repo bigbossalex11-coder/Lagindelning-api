@@ -77,10 +77,11 @@ app.MapPost("/players/{id}/file",(int id, IFormFile file) => {
         return Results.NotFound();
 
     Directory.CreateDirectory("uploads");
-    var patch = Path.Combine("uploads", file.FileName);
-    using var stream = File.Create(patch);
+    var savedName = $"{id}_{file.FileName}";
+    var path = Path.Combine("uploads", savedName);
+    using var stream = File.Create(path);
     file.CopyTo(stream);
-    var changed = existing with { FileName = file.FileName };
+    var changed = existing with { FileName = savedName };
     players[players.IndexOf(existing)] = changed;
     Save();
     return Results.Ok(changed);
