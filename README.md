@@ -16,13 +16,16 @@ API lyssnar på http://localhost:5293 : testa http://localhost:5293/players
 
 ## Endpoints
 
+```
 | Metod | Adress | Gör |
 |---|---|---|
-| GET | /players | ... |
-| POST | /players | ... |
-| PUT | /players/{id} | ... |
-| POST | /players/{id}/file | ... |
+| GET | /players | Hämtar alla spelare i listan |
+| POST | /players | Lägger till en spelare i listan |
+| PUT | /players/{id} | Ändrar rank på en spelare i listan |
+| POST | /players/{id}/file | Lägger till en fil på en spelare i listan |
+| DELETE | /players/{id} | Tar bort en spelare från listan |
 
+```
 ## Webapp
 
 Frontend finns i [Lagindelning](https://github.com/bigbossalex11-coder/Lagindelning). Starta API:t först, sedan webappen.
