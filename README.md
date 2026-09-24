@@ -24,7 +24,18 @@ API lyssnar på http://localhost:5293 : testa http://localhost:5293/players
 | PUT | /players/{id} | Ändrar rank på en spelare i listan |
 | POST | /players/{id}/file | Lägger till en fil på en spelare i listan |
 | DELETE | /players/{id} | Tar bort en spelare från listan |
+| GET | /teams | Delar upp alla spelare i slumpade eller nivåindelade lag |
 
+
+### GET /teams
+
+| Inställning | Värden | Betyder |
+|---|---|---|
+| teamCount | 1 eller fler | antal lag |
+| mode | random | slumpar alla spelare |
+| mode | level | nivåindelar spelare |
+
+Svarar 400 Bad Request om teamCount är 0 eller mindre.
 ```
 ## Webapp
 

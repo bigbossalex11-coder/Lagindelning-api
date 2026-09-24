@@ -23,7 +23,7 @@ Content-Type: application/json
 
 { "id":0, "name": "Charlie", "rank": "gul" }
 ###
-GET {{server_HostAddress}}/teams?count=0&mode=random
+GET {{server_HostAddress}}/teams?count=2&mode=random
 
 ###
 GET {{server_HostAddress}}/teams?count=2&mode=level

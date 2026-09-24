@@ -105,8 +105,8 @@ app.MapDelete("/players/{id}", (int id) =>
     return Results.NoContent();
 });
 
-app.MapGet("/teams", (int count, string mode) =>{
-    if (count <= 0)
+app.MapGet("/teams", (int teamCount, string mode) =>{
+    if (teamCount <= 0)
         return Results.BadRequest("0 och negativa tal är ej tillåtna");
     var shuffled = players.OrderBy(p => Random.Shared.Next()).ToList();
     if (mode == "level")
@@ -114,14 +114,14 @@ app.MapGet("/teams", (int count, string mode) =>{
         shuffled = shuffled.OrderBy(p => p.Rank).ToList();
     }
     var teams = new List<List<Player>>();
-    for (int i = 0; i < count; i++)
+    for (int i = 0; i < teamCount; i++)
     {
         teams.Add(new List<Player>());
     }
 
     for (int i = 0; i < shuffled.Count; i++)
         {
-        teams[i % count].Add(shuffled[i]);
+        teams[i % teamCount].Add(shuffled[i]);
     }
     return Results.Ok(teams);
 });
