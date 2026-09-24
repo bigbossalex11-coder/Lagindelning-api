@@ -11,12 +11,12 @@ Accept: application/json
 
 ###
 
-DELETE {{server_HostAddress}}/players/
+DELETE {{server_HostAddress}}/players/2
 
 ###
 POST {{server_HostAddress}}/players
 Content-Type: application/json
 
-{ "id": 0, "name": "test", "rank": "grön" }
+{ "id": 0, "name": "", "rank": "grön" }
 
 ###

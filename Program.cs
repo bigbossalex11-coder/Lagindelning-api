@@ -58,6 +58,9 @@ app.MapPut("/players/{id}", (int id, Player updated) =>
 
 app.MapPost("/players", (Player newPlayer) =>
 {
+    if (string.IsNullOrWhiteSpace(newPlayer.Name))
+        return Results.BadRequest("Namn saknas");
+
     var nextId = players.Count == 0 ? 1 : players.Max(p => p.Id) + 1;
     var created = newPlayer with { Id = nextId };
     players.Add(created);
