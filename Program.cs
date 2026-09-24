@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -97,6 +98,21 @@ app.MapDelete("/players/{id}", (int id) =>
     players.Remove(existing);
     Save();
     return Results.NoContent();
+});
+
+app.MapGet("/teams", (int count, string mode) =>{
+    var shuffled = players.OrderBy(p => Random.Shared.Next()).ToList();
+    var teams = new List<List<Player>>();
+    for (int i = 0; i < count; i++)
+    {
+        teams.Add(new List<Player>());
+    }
+
+    for (int i = 0; i < shuffled.Count; i++)
+        {
+        teams[i % count].Add(shuffled[i]);
+    }
+    return Results.Ok(teams);
 });
 
 app.Run();

@@ -23,3 +23,5 @@ PUT {{server_HostAddress}}/players/2
 Content-Type: application/json
 
 { "id":2, "name": "Adam", "rank": "röd" }
+###
+GET {{server_HostAddress}}/teams?count=3&mode=random
