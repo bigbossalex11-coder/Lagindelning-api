@@ -4,7 +4,6 @@ GET {{server_HostAddress}}/players
 Accept: application/json
 
 ###
-
 DELETE {{server_HostAddress}}/players/1
 
 ###
@@ -25,3 +24,6 @@ Content-Type: application/json
 { "id":2, "name": "Adam", "rank": "röd" }
 ###
 GET {{server_HostAddress}}/teams?count=3&mode=random
+
+###
+GET {{server_HostAddress}}/teams?count=2&mode=level

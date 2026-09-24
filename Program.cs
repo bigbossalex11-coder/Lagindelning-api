@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -102,6 +101,10 @@ app.MapDelete("/players/{id}", (int id) =>
 
 app.MapGet("/teams", (int count, string mode) =>{
     var shuffled = players.OrderBy(p => Random.Shared.Next()).ToList();
+    if (mode == "level")
+    {
+        shuffled = shuffled.OrderBy(p => p.Rank).ToList();
+    }
     var teams = new List<List<Player>>();
     for (int i = 0; i < count; i++)
     {
