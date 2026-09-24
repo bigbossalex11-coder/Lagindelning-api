@@ -18,12 +18,12 @@ Content-Type: application/json
 
 { "id": 7, "name": "Adam", "rank": "blå" }
 ###
-PUT {{server_HostAddress}}/players/7
+PUT {{server_HostAddress}}/players/6
 Content-Type: application/json
 
-{ "id":7, "name": "Daniel", "rank": "röd" }
+{ "id":0, "name": "Charlie", "rank": "gul" }
 ###
-GET {{server_HostAddress}}/teams?count=3&mode=random
+GET {{server_HostAddress}}/teams?count=0&mode=random
 
 ###
 GET {{server_HostAddress}}/teams?count=2&mode=level

@@ -106,6 +106,8 @@ app.MapDelete("/players/{id}", (int id) =>
 });
 
 app.MapGet("/teams", (int count, string mode) =>{
+    if (count <= 0)
+        return Results.BadRequest("0 och negativa tal är ej tillåtna");
     var shuffled = players.OrderBy(p => Random.Shared.Next()).ToList();
     if (mode == "level")
     {
