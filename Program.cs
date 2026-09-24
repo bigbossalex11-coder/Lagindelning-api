@@ -83,6 +83,18 @@ app.MapPost("/players/{id}/file",(int id, IFormFile file) => {
     return Results.Ok(changed);
 }).DisableAntiforgery();
 
+
+app.MapDelete("/players/{id}", (int id) =>
+{
+    var existing = players.FirstOrDefault(p => p.Id == id);
+    if (existing is null)
+        return Results.NotFound();
+
+    players.Remove(existing);
+    Save();
+    return Results.NoContent();
+});
+
 app.Run();
 
 record Player(int Id, string Name, string Rank, string? FileName = null);

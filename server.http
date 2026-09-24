@@ -4,3 +4,13 @@ GET {{server_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+@server_HostAddress = http://localhost:5293
+
+GET {{server_HostAddress}}/players
+Accept: application/json
+
+###
+
+DELETE {{server_HostAddress}}/players/3
+
+###
