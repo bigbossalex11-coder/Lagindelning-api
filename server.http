@@ -1,22 +1,25 @@
 @server_HostAddress = http://localhost:5293
 
-GET {{server_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
-@server_HostAddress = http://localhost:5293
-
 GET {{server_HostAddress}}/players
 Accept: application/json
 
 ###
 
-DELETE {{server_HostAddress}}/players/2
+DELETE {{server_HostAddress}}/players/1
 
 ###
 POST {{server_HostAddress}}/players
 Content-Type: application/json
 
-{ "id": 0, "name": "", "rank": "grön" }
+{ "id": 0, "name": "test", "rank": "grön" }
 
 ###
+POST {{server_HostAddress}}/players
+Content-Type: application/json
+
+{ "id": 0, "name": "Adam", "rank": "grön" }
+###
+PUT {{server_HostAddress}}/players/2
+Content-Type: application/json
+
+{ "id":2, "name": "Adam", "rank": "röd" }
