@@ -50,4 +50,16 @@ public class PlayersController : ControllerBase
         _repo.Save();
         return Ok(changed);
     }
+    
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id) 
+    {
+        var existing = _repo.Players.FirstOrDefault(p => p.Id == id);
+        if (existing is null)
+            return NotFound();
+
+        _repo.Players.Remove(existing);
+        _repo.Save();
+        return NoContent();
+    }
 }

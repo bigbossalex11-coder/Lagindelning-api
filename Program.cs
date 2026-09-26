@@ -64,18 +64,6 @@ app.MapPost("/players/{id}/file",(int id, IFormFile file) => {
     return Results.Ok(changed);
 }).DisableAntiforgery();
 
-
-app.MapDelete("/players/{id}", (int id) =>
-{
-    var existing = players.FirstOrDefault(p => p.Id == id);
-    if (existing is null)
-        return Results.NotFound();
-
-    players.Remove(existing);
-    Save();
-    return Results.NoContent();
-});
-
 app.MapGet("/teams", (int teamCount, string mode) =>{
     if (teamCount <= 0)
         return Results.BadRequest("0 och negativa tal är ej tillåtna");
