@@ -1,4 +1,5 @@
 using System.Text.Json;
+using server.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -127,5 +128,3 @@ app.MapGet("/teams", (int teamCount, string mode) =>{
 });
 
 app.Run();
-
-record Player(int Id, string Name, string Rank, string? FileName = null);
