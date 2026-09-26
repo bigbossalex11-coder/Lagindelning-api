@@ -4,7 +4,7 @@ GET {{server_HostAddress}}/players
 Accept: application/json
 
 ###
-DELETE {{server_HostAddress}}/players/1
+DELETE {{server_HostAddress}}/players/10
 
 ###
 POST {{server_HostAddress}}/players
@@ -18,12 +18,12 @@ Content-Type: application/json
 
 { "id": 7, "name": "Adam", "rank": "blå" }
 ###
-PUT {{server_HostAddress}}/players/6
+PUT {{server_HostAddress}}/players/10
 Content-Type: application/json
 
-{ "id":0, "name": "Charlie", "rank": "gul" }
+{ "id":10, "name": "test", "rank": "gul" }
 ###
-GET {{server_HostAddress}}/teams?count=2&mode=random
+GET {{server_HostAddress}}/teams?teamCount=0&mode=random
 
 ###
-GET {{server_HostAddress}}/teams?count=2&mode=level
+GET {{server_HostAddress}}/teams?teamCount=2&mode=level

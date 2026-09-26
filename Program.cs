@@ -47,25 +47,4 @@ void Save()
 
 app.UseCors();
 
-app.MapGet("/teams", (int teamCount, string mode) =>{
-    if (teamCount <= 0)
-        return Results.BadRequest("0 och negativa tal är ej tillåtna");
-    var shuffled = players.OrderBy(p => Random.Shared.Next()).ToList();
-    if (mode == "level")
-    {
-        shuffled = shuffled.OrderBy(p => p.Rank).ToList();
-    }
-    var teams = new List<List<Player>>();
-    for (int i = 0; i < teamCount; i++)
-    {
-        teams.Add(new List<Player>());
-    }
-
-    for (int i = 0; i < shuffled.Count; i++)
-        {
-        teams[i % teamCount].Add(shuffled[i]);
-    }
-    return Results.Ok(teams);
-});
-
 app.Run();
