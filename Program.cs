@@ -47,23 +47,6 @@ void Save()
 
 app.UseCors();
 
-app.MapPost("/players/{id}/file",(int id, IFormFile file) => {
-
-    var existing = players.FirstOrDefault(p => p.Id == id);
-    if (existing is null)
-        return Results.NotFound();
-
-    Directory.CreateDirectory("uploads");
-    var savedName = $"{id}_{file.FileName}";
-    var path = Path.Combine("uploads", savedName);
-    using var stream = File.Create(path);
-    file.CopyTo(stream);
-    var changed = existing with { FileName = savedName };
-    players[players.IndexOf(existing)] = changed;
-    Save();
-    return Results.Ok(changed);
-}).DisableAntiforgery();
-
 app.MapGet("/teams", (int teamCount, string mode) =>{
     if (teamCount <= 0)
         return Results.BadRequest("0 och negativa tal är ej tillåtna");

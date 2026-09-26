@@ -62,4 +62,21 @@ public class PlayersController : ControllerBase
         _repo.Save();
         return NoContent();
     }
+    [HttpPost("{id}/file")]
+    public IActionResult UploadFile(int id, IFormFile file)
+    {
+        var existing = _repo.Players.FirstOrDefault(p => p.Id == id);
+        if (existing is null)
+            return NotFound();
+
+        Directory.CreateDirectory("uploads");
+        var savedName = $"{id}_{file.FileName}";
+        var path = Path.Combine("uploads", savedName);
+        using var stream = System.IO.File.Create(path);
+        file.CopyTo(stream);
+        var changed = existing with { FileName = savedName };
+        _repo.Players[_repo.Players.IndexOf(existing)] = changed;
+        _repo.Save();
+        return Ok(changed);
+    }
 }
