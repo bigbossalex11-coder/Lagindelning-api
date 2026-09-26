@@ -7,12 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
 builder.Services.AddCors(options =>
      options.AddDefaultPolicy(policy =>
      policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod()));
 
 builder.Services.AddSingleton<PlayerRepository>();
+builder.Services.AddControllers();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,6 +22,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
 var players = new List<Player>
 {
@@ -45,8 +46,6 @@ void Save()
 }
 
 app.UseCors();
-
-app.MapGet("/players", () => players);
 
 app.MapPut("/players/{id}", (int id, Player updated) =>
 {
