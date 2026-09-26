@@ -62,22 +62,6 @@ app.MapPut("/players/{id}", (int id, Player updated) =>
     return Results.Ok(changed);
 });
 
-app.MapPost("/players", (Player newPlayer) =>
-{
-    if (string.IsNullOrWhiteSpace(newPlayer.Name))
-        return Results.BadRequest("Namn saknas");
-    if (!allowedRanks.Contains(newPlayer.Rank))
-        return Results.BadRequest("Ranken måste vara grön, gul eller röd");
-
-    var nextId = players.Count == 0 ? 1 : players.Max(p => p.Id) + 1;
-    var created = newPlayer with { Id = nextId };
-    players.Add(created);
-    Save();
-
-    return Results.Created($"/players/{created.Id}", created);
-
-});
-
 app.MapPost("/players/{id}/file",(int id, IFormFile file) => {
 
     var existing = players.FirstOrDefault(p => p.Id == id);
