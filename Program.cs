@@ -47,21 +47,6 @@ void Save()
 
 app.UseCors();
 
-app.MapPut("/players/{id}", (int id, Player updated) =>
-{
-    var existing = players.FirstOrDefault(p => p.Id == id);
-    if (existing is null)
-        return Results.NotFound();
-    if (!allowedRanks.Contains(updated.Rank))
-        return Results.BadRequest("Ranken måste vara grön, gul eller röd");
-
-    var changed = existing with { Rank = updated.Rank };
-
-    players[players.IndexOf(existing)] = changed;
-    Save();
-    return Results.Ok(changed);
-});
-
 app.MapPost("/players/{id}/file",(int id, IFormFile file) => {
 
     var existing = players.FirstOrDefault(p => p.Id == id);

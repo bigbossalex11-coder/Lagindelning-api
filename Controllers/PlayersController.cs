@@ -34,4 +34,20 @@ public class PlayersController : ControllerBase
         _repo.Save();
         return Created($"/players/{created.Id}", created);
     }
+    
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, Player updated)
+    {
+        var existing = _repo.Players.FirstOrDefault(p => p.Id == id);
+        if (existing is null)
+            return NotFound();
+        if (!AllowedRanks.Contains(updated.Rank))
+            return BadRequest("Ranken måste vara grön, gul eller röd");
+
+        var changed = existing with { Rank = updated.Rank };
+
+        _repo.Players[_repo.Players.IndexOf(existing)] = changed;
+        _repo.Save();
+        return Ok(changed);
+    }
 }
