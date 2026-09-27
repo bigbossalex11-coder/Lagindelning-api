@@ -1,5 +1,3 @@
-using System.Text.Json;
-using server.Models;
 using server.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,31 +18,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
 app.UseHttpsRedirection();
-app.MapControllers();
-
-var players = new List<Player>
-{
-    new Player(1, "adam" , "grön"),
-    new Player(2, "eva" ,"gul"),
-    new Player(3, "oskar" ,"röd")
-};
-
-var allowedRanks = new[] { "grön", "gul", "röd" };
-
-if (File.Exists("players.json"))
-{
-    var json = File.ReadAllText("players.json");
-    players = JsonSerializer.Deserialize<List<Player>>(json) ?? players;
-}
-
-void Save()
-{
-    var json = JsonSerializer.Serialize(players);
-    File.WriteAllText("players.json", json);
-}
-
 app.UseCors();
+app.MapControllers();
 
 app.Run();
