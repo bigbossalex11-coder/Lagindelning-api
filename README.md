@@ -73,8 +73,7 @@ Listan ligger i minnet och skrivs till players.json vid varje ändring
 och läses in vid start. Persistens utan extra beroenden. 
 SQLite med EF Core är nästa steg och kräver ingen ändring i klienten.
 
-Två separata repon. Två program som startas och driftsätts var för sig. 
-Uppgiften kräver dessutom två repolänkar.
+Tre separata repon. Tre program, API, webbapp och mobilapp, som startas och driftsätts var för sig.
 
 Filnamn i stället för bilder Spelarna är barn, så foton vore personuppgifter.
 Appen sparar filer och visar filnamnet, men lagrar inga bilder.
