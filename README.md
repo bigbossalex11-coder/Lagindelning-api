@@ -1,6 +1,6 @@
 # Lagindelning - API
 
-Lagindelning-api är backend som är kopplat till lagindelning webappen.
+Lagindelning-api är backend som är kopplat till webbappen och mobilappen.
 
 
 ## Köra lokalt
@@ -13,7 +13,7 @@ dotnet run
 ```
 
 API lyssnar på http://localhost:5293 : testa http://localhost:5293/players
-API lyssnar på alla nätverkskort (0.0.0.0), så att mobilappen kan nå det från telfon på samma wifi.
+API lyssnar på alla nätverkskort (0.0.0.0), så att mobilappen kan nå det från telefon på samma wifi.
 ## Struktur
 
 ```
