@@ -49,7 +49,7 @@ Program.cs               registrerar tjänster och kopplar in controllers
 
 Svarar 400 Bad Request om teamCount är 0 eller mindre.
 
-## Webapp
+## Webbapp
 
 Frontend finns i [Lagindelning](https://github.com/bigbossalex11-coder/Lagindelning). Starta API:t först, sedan webappen.
 
