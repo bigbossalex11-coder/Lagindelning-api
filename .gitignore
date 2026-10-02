@@ -483,3 +483,7 @@ $RECYCLE.BIN/
 
 Uploads/
 players.json
+
+*.db
+*.db-shm
+*.db-wal

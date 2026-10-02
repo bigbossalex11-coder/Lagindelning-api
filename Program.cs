@@ -1,4 +1,6 @@
 using server.Repositories;
+using Microsoft.EntityFrameworkCore;
+using server.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSingleton<PlayerRepository>();
 builder.Services.AddControllers();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=lagindelning.db"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
