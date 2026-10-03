@@ -1,7 +1,7 @@
+using System.Resources;
 using Microsoft.AspNetCore.Mvc;
 using server.Models;
 using server.Repositories;
-using System.Resources;
 
 namespace server.Controllers;
 
@@ -18,8 +18,8 @@ public class PlayersController : ControllerBase
     }
 
     [HttpGet]
-    public List<Player> GetAll() => _repo.Players;
-    
+    public List<Player> GetAll() => _repo.GetAll();
+
     [HttpPost]
     public IActionResult Create(Player newPlayer)
     {
@@ -28,17 +28,14 @@ public class PlayersController : ControllerBase
         if (!AllowedRanks.Contains(newPlayer.Rank))
             return BadRequest("Ranken måste vara grön, gul eller röd");
 
-        var nextId = _repo.Players.Count == 0 ? 1 : _repo.Players.Max(p => p.Id) + 1;
-        var created = newPlayer with { Id = nextId };
-        _repo.Players.Add(created);
-        _repo.Save();
+        var created = _repo.Add(newPlayer with { Id = 0 });
         return Created($"/players/{created.Id}", created);
     }
-    
+
     [HttpPut("{id}")]
     public IActionResult Update(int id, Player updated)
     {
-        var existing = _repo.Players.FirstOrDefault(p => p.Id == id);
+        var existing = _repo.GetById(id);
         if (existing is null)
             return NotFound();
         if (!AllowedRanks.Contains(updated.Rank))
@@ -46,26 +43,25 @@ public class PlayersController : ControllerBase
 
         var changed = existing with { Rank = updated.Rank };
 
-        _repo.Players[_repo.Players.IndexOf(existing)] = changed;
-        _repo.Save();
+        _repo.Update(existing, changed);
         return Ok(changed);
     }
-    
+
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id) 
+    public IActionResult Delete(int id)
     {
-        var existing = _repo.Players.FirstOrDefault(p => p.Id == id);
+        var existing = _repo.GetById(id);
         if (existing is null)
             return NotFound();
 
-        _repo.Players.Remove(existing);
-        _repo.Save();
+        _repo.Delete(existing);
         return NoContent();
     }
+
     [HttpPost("{id}/file")]
     public IActionResult UploadFile(int id, IFormFile file)
     {
-        var existing = _repo.Players.FirstOrDefault(p => p.Id == id);
+        var existing = _repo.GetById(id);
         if (existing is null)
             return NotFound();
 
@@ -75,8 +71,7 @@ public class PlayersController : ControllerBase
         using var stream = System.IO.File.Create(path);
         file.CopyTo(stream);
         var changed = existing with { FileName = savedName };
-        _repo.Players[_repo.Players.IndexOf(existing)] = changed;
-        _repo.Save();
+        _repo.Update(existing, changed);
         return Ok(changed);
     }
 }

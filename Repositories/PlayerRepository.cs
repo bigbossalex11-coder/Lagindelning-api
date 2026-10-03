@@ -1,29 +1,38 @@
+using server.Data;
 using server.Models;
-using System.Text.Json;
 
 namespace server.Repositories;
 
 public class PlayerRepository
 {
-	public List<Player> Players { get; private set; } = new List<Player>
-	{
-		new Player(1, "adam" , "grön"),
-		new Player(2, "eva" ,"gul"),
-		new Player(3, "oskar" ,"röd")
-	};
+    private readonly AppDbContext _db;
 
-	public PlayerRepository()
-	{
-		if (File.Exists("players.json"))
-		{
-			var json = File.ReadAllText("players.json");
-			Players = JsonSerializer.Deserialize<List<Player>>(json) ?? Players;
-		}
-	}
+    public PlayerRepository(AppDbContext db)
+    {
+        _db = db;
+    }
 
-	public void Save()
-	{
-		var json = JsonSerializer.Serialize(Players);
-		File.WriteAllText("players.json", json);
-	}
+    public List<Player> GetAll() => _db.Players.ToList();
+
+    public Player? GetById(int id) => _db.Players.FirstOrDefault(p => p.Id == id);
+
+    public Player Add(Player player)
+    {
+        _db.Players.Add(player);
+        _db.SaveChanges();
+        return player;
+    }
+
+    public void Delete(Player player)
+    {
+        _db.Players.Remove(player);
+        _db.SaveChanges();
+    }
+
+    public Player Update(Player existing, Player changed)
+    {
+        _db.Entry(existing).CurrentValues.SetValues(changed);
+        _db.SaveChanges();
+        return existing;
+    }
 }

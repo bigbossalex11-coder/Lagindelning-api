@@ -9,7 +9,7 @@ namespace server.Controllers;
 public class TeamsController : ControllerBase
 {
     private readonly PlayerRepository _repo;
-    
+
     public TeamsController(PlayerRepository repo)
     {
         _repo = repo;
@@ -20,7 +20,7 @@ public class TeamsController : ControllerBase
     {
         if (teamCount <= 0)
             return BadRequest("0 och negativa tal är ej tillåtna");
-        var shuffled = _repo.Players.OrderBy(p => Random.Shared.Next()).ToList();
+        var shuffled = _repo.GetAll().OrderBy(p => Random.Shared.Next()).ToList();
         if (mode == "level")
         {
             shuffled = shuffled.OrderBy(p => p.Rank).ToList();
